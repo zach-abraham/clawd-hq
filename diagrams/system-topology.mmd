@@ -7,7 +7,7 @@ graph TD
     end
 
     subgraph TAILSCALE["Tailscale Mesh Network"]
-        subgraph MACMINI["Mac Mini (M2) — 100.115.235.86"]
+        subgraph MACMINI["Mac Mini (M2)"]
             OC_GW["OpenClaw Gateway"]
             DOCKER["Docker Stack<br/>(Uptime Kuma, Beszel,<br/>Langfuse, n8n)"]
             EVENTBUS["Event Bus<br/>(SQLite)"]
@@ -25,12 +25,12 @@ graph TD
             DOCKER_WIN["Docker Workloads"]
         end
 
-        subgraph VPS["VPS (DigitalOcean) — 100.104.163.128"]
+        subgraph VPS["VPS (DigitalOcean)"]
             JOB_LEGION["job-legion<br/>Dashboard (:8484)"]
             BETTING_LAB["betting-lab"]
         end
 
-        subgraph ROUTER["GL-iNet Beryl AX — 192.168.8.1"]
+        subgraph ROUTER["GL-iNet Beryl AX"]
             ADGUARD["AdGuard Home"]
             REPEATER["WiFi Repeater<br/>(WhiteSky-Eado)"]
         end

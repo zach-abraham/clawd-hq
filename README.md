@@ -14,7 +14,7 @@ A multi-agent AI orchestration platform running on a Mac Mini, coordinating 8 sp
 │       │            │             │              │       │
 │  ┌────┴────┐  ┌────┴─────┐  ┌───┴──────┐  ┌───┴────┐ │
 │  │Professor│  │ Sentinel │  │   CEO    │  │Trainer │ │
-│  │(education)│ │(infra)  │  │(strategy)│  │(models)│ │
+│  │(education)│ │(infra)  │  │(strategy)│  │ (gym)  │ │
 │  └────┬────┘  └────┬─────┘  └────┬─────┘  └───┬────┘ │
 │       │            │             │              │       │
 │  ┌────┴────────────┴─────────────┴──────────────┴────┐ │
@@ -48,7 +48,7 @@ A multi-agent AI orchestration platform running on a Mac Mini, coordinating 8 sp
 | **Professor** | Education | On-demand | Learning path management, study material generation |
 | **CEO** | Strategy | On-demand | Cross-agent briefings, strategic planning, business development |
 | **Sentinel** | Infrastructure | Hourly | 5-machine health checks, service monitoring, auto-recovery |
-| **Trainer** | ML/Models | On-demand | Model training, backtesting, calibration analysis |
+| **Trainer** | Personal Fitness | On-demand | Workout programming, progress tracking, nutrition guidance |
 
 ## Key Systems
 

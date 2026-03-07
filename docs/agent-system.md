@@ -13,7 +13,7 @@ Clawd HQ operates a fleet of eight specialized AI agents. Each agent has a focus
 | Professor   | Education & research | On-demand | Claude (reasoning)  |
 | CEO         | Strategy & planning  | On-demand | Claude (reasoning)  |
 | Sentinel    | Infra monitoring     | Hourly    | Gemini Flash (fast) |
-| Trainer     | ML model training    | On-demand | Gemini Flash (fast) |
+| Trainer     | Personal fitness     | On-demand | Gemini Flash (fast) |
 
 ## Agent Profiles
 
@@ -66,12 +66,12 @@ Monitors system health across all five machines. Checks service availability, di
 - **Responsibilities:** Health checks, alerting, incident response
 - **Outputs:** Health reports, infrastructure alerts, uptime metrics
 
-### Trainer --- ML Models
+### Trainer --- Personal Fitness
 
-Manages machine learning model training, evaluation, and deployment. Handles data pipeline monitoring and model performance tracking.
+AI-powered personal trainer. Generates workout programs, tracks progress, provides nutrition guidance, and adapts training plans based on performance data.
 
-- **Responsibilities:** Model training, evaluation, deployment, data quality
-- **Outputs:** Training logs, model metrics, deployment status
+- **Responsibilities:** Workout programming, progress tracking, nutrition planning, recovery monitoring
+- **Outputs:** Training plans, progress reports, nutrition guidance
 
 ## Agent Anatomy
 
