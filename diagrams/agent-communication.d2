@@ -1,0 +1,115 @@
+direction: right
+
+title: {
+  label: Inter-Agent Communication Patterns
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+  style.font-color: "#c9d1d9"
+}
+
+# Agents
+hal: {
+  label: HAL\n(Orchestrator)
+  style.fill: "#2c5282"
+  style.stroke: "#90cdf4"
+  style.stroke-width: 3
+  style.font-color: "#e2e8f0"
+}
+
+trader: {label: Trader; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+recruiter: {label: Recruiter; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+banker: {label: Banker; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+professor: {label: Professor; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+ceo: {label: CEO; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+sentinel: {label: Sentinel; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+trainer: {label: Trainer; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+
+# Communication Channels
+eventbus: {
+  label: "Event Bus\n(Async Pub/Sub)"
+  shape: cylinder
+  style.fill: "#553c9a"
+  style.stroke: "#b794f4"
+  style.font-color: "#e2e8f0"
+}
+
+mem0: {
+  label: "Mem0 Cloud\n(Persistent Memory)"
+  shape: cylinder
+  style.fill: "#553c9a"
+  style.stroke: "#b794f4"
+  style.font-color: "#e2e8f0"
+}
+
+a2a: {
+  label: "A2A Protocol\n(Sync Queries)"
+  style.fill: "#9b2c2c"
+  style.stroke: "#fc8181"
+  style.border-radius: 8
+  style.font-color: "#e2e8f0"
+}
+
+peer: {
+  label: "External A2A Peer\n(Coworker Agent)"
+  style.fill: "#2d3748"
+  style.stroke: "#f78166"
+  style.border-radius: 8
+  style.font-color: "#e2e8f0"
+  style.stroke-dash: 5
+}
+
+# All agents → Event Bus
+hal <-> eventbus: {style.stroke: "#b794f4"}
+trader -> eventbus: {style.stroke: "#b794f4"}
+recruiter -> eventbus: {style.stroke: "#b794f4"}
+banker -> eventbus: {style.stroke: "#b794f4"}
+professor -> eventbus: {style.stroke: "#b794f4"}
+ceo -> eventbus: {style.stroke: "#b794f4"}
+sentinel -> eventbus: {style.stroke: "#b794f4"}
+trainer -> eventbus: {style.stroke: "#b794f4"}
+
+# All agents → Mem0
+hal <-> mem0: {style.stroke: "#b794f4"}
+trader <-> mem0: {style.stroke: "#b794f4"}
+recruiter <-> mem0: {style.stroke: "#b794f4"}
+banker <-> mem0: {style.stroke: "#b794f4"}
+professor <-> mem0: {style.stroke: "#b794f4"}
+ceo <-> mem0: {style.stroke: "#b794f4"}
+sentinel <-> mem0: {style.stroke: "#b794f4"}
+trainer <-> mem0: {style.stroke: "#b794f4"}
+
+# Select agents → A2A
+hal <-> a2a: {style.stroke: "#fc8181"}
+trader <-> a2a: {style.stroke: "#fc8181"}
+sentinel <-> a2a: {style.stroke: "#fc8181"}
+ceo <-> a2a: {style.stroke: "#fc8181"}
+
+# A2A → External
+a2a <-> peer: Tailscale {style.stroke: "#f78166"; style.stroke-dash: 5}
+
+# Annotations
+note1: {
+  label: |md
+    **Event Bus**: Structured, auditable.
+    Agents publish decisions, alerts, discoveries.
+    HAL reads all events during synthesis.
+  |
+  near: top-left
+  shape: text
+  style.font-color: "#8b949e"
+  style.font-size: 12
+}
+
+note2: {
+  label: |md
+    **Mem0**: Persistent knowledge sharing.
+    DLP-sanitized before storage.
+    Personal + shared namespaces.
+  |
+  near: bottom-left
+  shape: text
+  style.font-color: "#8b949e"
+  style.font-size: 12
+}

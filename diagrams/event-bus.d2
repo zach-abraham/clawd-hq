@@ -1,0 +1,93 @@
+direction: down
+
+title: {
+  label: Cross-Agent Event Bus
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+  style.font-color: "#c9d1d9"
+}
+
+# Publishers
+publishers: {
+  label: Agent Publishers
+  style.fill: "#0d1117"
+  style.stroke: "#58a6ff"
+  style.border-radius: 12
+  style.font-color: "#58a6ff"
+
+  hal: {label: HAL; style.fill: "#2c5282"; style.stroke: "#90cdf4"; style.font-color: "#e2e8f0"}
+  trader: {label: Trader; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  recruiter: {label: Recruiter; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  banker: {label: Banker; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  professor: {label: Professor; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  ceo: {label: CEO; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  sentinel: {label: Sentinel; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  trainer: {label: Trainer; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+}
+
+# CLI Interface
+cli: {
+  label: "CLI Interface\neb publish | eb feed | eb mark-seen"
+  style.fill: "#1c2333"
+  style.stroke: "#8b949e"
+  style.border-radius: 8
+  style.font-color: "#c9d1d9"
+}
+
+# Event Categories
+categories: {
+  label: Event Categories
+  style.fill: "#1a1030"
+  style.stroke: "#b794f4"
+  style.border-radius: 12
+  style.font-color: "#b794f4"
+
+  decision: {label: "decision"; style.fill: "#2c5282"; style.stroke: "#90cdf4"; style.font-color: "#e2e8f0"}
+  alert: {label: "alert"; style.fill: "#9b2c2c"; style.stroke: "#fc8181"; style.font-color: "#e2e8f0"}
+  state_change: {label: "state_change"; style.fill: "#2f855a"; style.stroke: "#68d391"; style.font-color: "#e2e8f0"}
+  discovery: {label: "discovery"; style.fill: "#b7791f"; style.stroke: "#f6e05e"; style.font-color: "#1a202c"}
+}
+
+# SQLite Storage
+storage: {
+  label: SQLite (WAL mode)
+  shape: cylinder
+  style.fill: "#553c9a"
+  style.stroke: "#b794f4"
+  style.font-color: "#e2e8f0"
+}
+
+# Severity Escalation
+severity: {
+  label: Severity Escalation
+  style.fill: "#0d1117"
+  style.stroke: "#8b949e"
+  style.border-radius: 12
+  style.font-color: "#c9d1d9"
+
+  info: {label: "info → logged only"; style.fill: "#2d3748"; style.stroke: "#8b949e"; style.font-color: "#c9d1d9"}
+  warn: {label: "warn → + Mem0 broadcast"; style.fill: "#b7791f"; style.stroke: "#f6e05e"; style.font-color: "#1a202c"}
+  critical: {label: "critical → + Telegram alert"; style.fill: "#9b2c2c"; style.stroke: "#fc8181"; style.font-color: "#e2e8f0"}
+}
+
+# Consumers
+consumers: {
+  label: Event Consumers
+  style.fill: "#0d1117"
+  style.stroke: "#58a6ff"
+  style.border-radius: 12
+  style.font-color: "#58a6ff"
+
+  synthesis: {label: "HAL Synthesis\n(every 6h)"; style.fill: "#9b2c2c"; style.stroke: "#fc8181"; style.font-color: "#e2e8f0"}
+  sentinel: {label: "Sentinel\n(hourly)"; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+  all: {label: "All Agents\n(on session start)"; style.fill: "#2d3748"; style.stroke: "#63b3ed"; style.font-color: "#e2e8f0"}
+}
+
+# Connections
+publishers -> cli: publish events {style.stroke: "#58a6ff"}
+cli -> categories: categorize {style.stroke: "#b794f4"}
+categories -> storage: persist {style.stroke: "#b794f4"}
+storage -> severity: route by severity {style.stroke: "#8b949e"}
+storage -> consumers: feed unseen {style.stroke: "#58a6ff"}

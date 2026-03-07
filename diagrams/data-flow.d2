@@ -1,0 +1,195 @@
+direction: right
+
+title: {
+  label: Clawd HQ — Data Flow
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+  style.font-color: "#c9d1d9"
+}
+
+# Ingestion Layer
+ingestion: {
+  label: Background Ingestion
+  style.fill: "#1a2e1a"
+  style.stroke: "#68d391"
+  style.border-radius: 12
+  style.font-color: "#68d391"
+
+  market: {
+    label: Market Data
+    style.fill: "#2f855a"
+    style.stroke: "#68d391"
+    style.font-color: "#e2e8f0"
+  }
+  news: {
+    label: News & RSS
+    style.fill: "#2f855a"
+    style.stroke: "#68d391"
+    style.font-color: "#e2e8f0"
+  }
+  jobs: {
+    label: Job Boards
+    style.fill: "#2f855a"
+    style.stroke: "#68d391"
+    style.font-color: "#e2e8f0"
+  }
+  finance: {
+    label: Financial Data
+    style.fill: "#2f855a"
+    style.stroke: "#68d391"
+    style.font-color: "#e2e8f0"
+  }
+}
+
+# Agent Layer
+agents: {
+  label: Agent Layer
+  style.fill: "#0d1117"
+  style.stroke: "#58a6ff"
+  style.border-radius: 12
+  style.font-color: "#58a6ff"
+
+  hal: {
+    label: HAL\n(Orchestrator)
+    style.fill: "#2c5282"
+    style.stroke: "#90cdf4"
+    style.stroke-width: 3
+    style.font-color: "#e2e8f0"
+  }
+  trader: {
+    label: Trader\n(Markets)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  recruiter: {
+    label: Recruiter\n(Jobs)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  banker: {
+    label: Banker\n(Finance)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  professor: {
+    label: Professor\n(Education)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  ceo: {
+    label: CEO\n(Strategy)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  sentinel: {
+    label: Sentinel\n(Monitoring)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  trainer: {
+    label: Trainer\n(Fitness)
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+}
+
+# Core Infrastructure
+core: {
+  label: Core Infrastructure
+  style.fill: "#1a1030"
+  style.stroke: "#b794f4"
+  style.border-radius: 12
+  style.font-color: "#b794f4"
+
+  eventbus: {
+    label: Event Bus\n(SQLite)
+    shape: cylinder
+    style.fill: "#553c9a"
+    style.stroke: "#b794f4"
+    style.font-color: "#e2e8f0"
+  }
+  mem0: {
+    label: Mem0\n(Shared Memory)
+    shape: cylinder
+    style.fill: "#553c9a"
+    style.stroke: "#b794f4"
+    style.font-color: "#e2e8f0"
+  }
+}
+
+# Synthesis
+synthesis: {
+  label: HAL Synthesis
+  style.fill: "#2a1a1a"
+  style.stroke: "#fc8181"
+  style.border-radius: 12
+  style.font-color: "#fc8181"
+
+  engine: {
+    label: Synthesis Engine\n(Gemini Flash)
+    style.fill: "#9b2c2c"
+    style.stroke: "#fc8181"
+    style.font-color: "#e2e8f0"
+  }
+}
+
+# Output
+output: {
+  label: Output Channels
+  style.fill: "#2a2a10"
+  style.stroke: "#f6e05e"
+  style.border-radius: 12
+  style.font-color: "#f6e05e"
+
+  telegram: {
+    label: Telegram\n(Clawd HQ)
+    style.fill: "#b7791f"
+    style.stroke: "#f6e05e"
+    style.font-color: "#1a202c"
+  }
+  persistent: {
+    label: Mem0\n(Persistent)
+    style.fill: "#b7791f"
+    style.stroke: "#f6e05e"
+    style.font-color: "#1a202c"
+  }
+}
+
+# Ingestion → Agents
+ingestion.market -> agents.trader: {style.stroke: "#68d391"}
+ingestion.news -> agents.trader: {style.stroke: "#68d391"}
+ingestion.news -> agents.ceo: {style.stroke: "#68d391"}
+ingestion.jobs -> agents.recruiter: {style.stroke: "#68d391"}
+ingestion.finance -> agents.banker: {style.stroke: "#68d391"}
+
+# Agents → Core
+agents.hal -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.trader -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.recruiter -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.banker -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.professor -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.ceo -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.sentinel -> core.eventbus: publish {style.stroke: "#b794f4"}
+agents.trainer -> core.eventbus: publish {style.stroke: "#b794f4"}
+
+agents.hal <-> core.mem0: read/write {style.stroke: "#b794f4"}
+agents.trader <-> core.mem0: {style.stroke: "#b794f4"}
+agents.recruiter <-> core.mem0: {style.stroke: "#b794f4"}
+agents.banker <-> core.mem0: {style.stroke: "#b794f4"}
+
+# Core → Synthesis
+core.eventbus -> synthesis.engine: unseen events {style.stroke: "#fc8181"}
+core.mem0 -> synthesis.engine: context queries {style.stroke: "#fc8181"}
+
+# Synthesis → Output
+synthesis.engine -> output.telegram: briefings & alerts {style.stroke: "#f6e05e"}
+synthesis.engine -> output.persistent: consolidated state {style.stroke: "#f6e05e"}

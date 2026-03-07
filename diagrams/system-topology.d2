@@ -1,0 +1,203 @@
+direction: right
+
+title: {
+  label: Clawd HQ — Infrastructure Topology
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+  style.font-color: "#c9d1d9"
+}
+
+# External Services
+external: {
+  label: External Services
+  style.border-radius: 12
+  style.fill: "#1a1e2e"
+  style.stroke: "#8b949e"
+  style.font-color: "#c9d1d9"
+
+  mem0: {
+    label: Mem0 Cloud
+    shape: cylinder
+    style.fill: "#553c9a"
+    style.stroke: "#b794f4"
+    style.font-color: "#e2e8f0"
+  }
+  telegram: {
+    label: Telegram Bot
+    style.fill: "#26A5E4"
+    style.stroke: "#58c9f0"
+    style.font-color: "#ffffff"
+  }
+  kalshi: {
+    label: Kalshi API
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+  github: {
+    label: GitHub
+    style.fill: "#2d3748"
+    style.stroke: "#63b3ed"
+    style.font-color: "#e2e8f0"
+  }
+}
+
+# Tailscale Mesh
+mesh: {
+  label: Tailscale Mesh
+  style.border-radius: 12
+  style.fill: "#0d1117"
+  style.stroke: "#58a6ff"
+  style.stroke-width: 2
+  style.font-color: "#58a6ff"
+
+  # Mac Mini (Primary)
+  mini: {
+    label: Mac Mini (M2)
+    style.fill: "#1c2333"
+    style.stroke: "#58a6ff"
+    style.stroke-width: 2
+    style.border-radius: 8
+    style.font-color: "#c9d1d9"
+
+    agents: {
+      label: "8 AI Agents"
+      style.fill: "#2c5282"
+      style.stroke: "#90cdf4"
+      style.font-color: "#e2e8f0"
+    }
+    openclaw: {
+      label: OpenClaw Gateway
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+    eventbus: {
+      label: SQLite Event Bus
+      style.fill: "#553c9a"
+      style.stroke: "#b794f4"
+      style.font-color: "#e2e8f0"
+    }
+    docker: {
+      label: "Docker Services\n(Uptime Kuma, Langfuse,\nBeszel, n8n)"
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+    a2a: {
+      label: A2A Server
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+  }
+
+  # MacBook Air
+  air: {
+    label: MacBook Air
+    style.fill: "#1c2333"
+    style.stroke: "#8b949e"
+    style.border-radius: 8
+    style.font-color: "#c9d1d9"
+
+    claude: {
+      label: Claude Code IDE
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+  }
+
+  # Gaming PC
+  pc: {
+    label: Gaming PC
+    style.fill: "#1c2333"
+    style.stroke: "#8b949e"
+    style.border-radius: 8
+    style.font-color: "#c9d1d9"
+
+    workloads: {
+      label: Docker Workloads
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+  }
+
+  # VPS
+  vps: {
+    label: VPS (DigitalOcean)
+    style.fill: "#1c2333"
+    style.stroke: "#8b949e"
+    style.border-radius: 8
+    style.font-color: "#c9d1d9"
+
+    joblg: {
+      label: Job Legion
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+    betlab: {
+      label: Betting Lab
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+  }
+
+  # Router
+  router: {
+    label: GL-iNet Router
+    style.fill: "#1c2333"
+    style.stroke: "#8b949e"
+    style.border-radius: 8
+    style.font-color: "#c9d1d9"
+
+    adguard: {
+      label: AdGuard Home
+      style.fill: "#2d3748"
+      style.stroke: "#63b3ed"
+      style.font-color: "#e2e8f0"
+    }
+  }
+}
+
+# Connections within mesh
+mesh.mini <-> mesh.air: Tailscale {
+  style.stroke: "#58a6ff"
+  style.stroke-dash: 5
+}
+mesh.mini <-> mesh.pc: Tailscale {
+  style.stroke: "#58a6ff"
+  style.stroke-dash: 5
+}
+mesh.mini <-> mesh.vps: Tailscale {
+  style.stroke: "#58a6ff"
+  style.stroke-dash: 5
+}
+mesh.mini <-> mesh.router: LAN {
+  style.stroke: "#8b949e"
+}
+
+# External connections
+mesh.mini.agents -> external.mem0: read/write {
+  style.stroke: "#b794f4"
+}
+mesh.mini.agents -> external.telegram: alerts {
+  style.stroke: "#26A5E4"
+}
+mesh.mini.agents -> external.kalshi: trades {
+  style.stroke: "#63b3ed"
+}
+mesh.mini -> external.github: deploy {
+  style.stroke: "#8b949e"
+}
+
+# A2A cross-machine
+mesh.air.claude -> mesh.mini.a2a: A2A query {
+  style.stroke: "#f78166"
+  style.stroke-dash: 3
+}
