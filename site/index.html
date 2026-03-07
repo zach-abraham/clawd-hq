@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clawd HQ</title>
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  padding: 24px 16px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin-bottom: 4px;
+}
+
+.sidebar-subtitle {
+  font-size: 12px;
+  color: #8b949e;
+  margin-bottom: 28px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #c9d1d9;
+  border-radius: 6px;
+  transition: background 150ms;
+}
+
+.sidebar nav a:hover {
+  background: #21262d;
+  text-decoration: none;
+}
+
+/* Main content */
+.main {
+  margin-left: 240px;
+  max-width: 820px;
+  padding: 40px 48px 80px;
+}
+
+/* Sections */
+section {
+  margin-bottom: 48px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+p {
+  margin-bottom: 12px;
+  color: #c9d1d9;
+}
+
+/* Architecture diagram */
+.diagram {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.diagram pre {
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #8b949e;
+  margin: 0;
+  white-space: pre;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+thead th {
+  text-align: left;
+  font-weight: 600;
+  color: #f0f6fc;
+  padding: 8px 12px;
+  border-bottom: 1px solid #30363d;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #21262d;
+  vertical-align: top;
+}
+
+tbody tr {
+  transition: background 150ms;
+}
+
+tbody tr:hover {
+  background: #161b22;
+}
+
+td:first-child {
+  font-weight: 500;
+  color: #f0f6fc;
+  white-space: nowrap;
+}
+
+/* Tech stack list */
+.stack-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.stack-list li {
+  display: flex;
+  padding: 6px 0;
+  border-bottom: 1px solid #21262d;
+  font-size: 14px;
+}
+
+.stack-list li:last-child {
+  border-bottom: none;
+}
+
+.stack-label {
+  width: 140px;
+  flex-shrink: 0;
+  color: #8b949e;
+  font-weight: 500;
+}
+
+.stack-value {
+  color: #c9d1d9;
+}
+
+/* Detail lists */
+.detail-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.detail-list li {
+  padding: 4px 0;
+  font-size: 14px;
+  color: #c9d1d9;
+}
+
+.detail-list li::before {
+  content: "\2022";
+  color: #484f58;
+  margin-right: 8px;
+}
+
+code {
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #161b22;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #30363d;
+}
+
+/* Inline tags */
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  background: #161b22;
+}
+
+.tag-accent {
+  border-color: rgba(247, 129, 102, 0.3);
+  color: #f78166;
+}
+
+/* Footer */
+footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid #21262d;
+  font-size: 13px;
+  color: #484f58;
+}
+
+footer a {
+  color: #484f58;
+}
+
+footer a:hover {
+  color: #8b949e;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #30363d;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sidebar-title {
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .sidebar-subtitle {
+    display: none;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .sidebar nav a {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 100px 20px 60px;
+  }
+
+  html {
+    scroll-padding-top: 100px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  thead th, tbody td {
+    padding: 6px 8px;
+  }
+
+  .stack-list li {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stack-label {
+    width: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div>
+    <div class="sidebar-title">Clawd HQ</div>
+    <div class="sidebar-subtitle">Multi-agent AI orchestration</div>
+  </div>
+  <nav>
+    <a href="#architecture">Architecture</a>
+    <a href="#agents">Agents</a>
+    <a href="#event-bus">Event Bus</a>
+    <a href="#memory">Memory</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#tech-stack">Tech Stack</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <p>Clawd HQ is a multi-agent AI system running on a Mac Mini (M2). Eight specialized agents operate autonomously across domains &mdash; prediction markets, job applications, personal finance, infrastructure monitoring, education, and strategic planning. They coordinate through a shared SQLite event bus and a persistent memory layer, with HAL serving as the primary orchestrator that synthesizes cross-domain intelligence every six hours.</p>
+    <div class="diagram">
+<pre>
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;                    Mac Mini (M2)                         &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
+&#9474;  &#9474;   HAL   &#9474;  &#9474;  Trader  &#9474;  &#9474; Recruiter&#9474;  &#9474; Banker  &#9474; &#9474;
+&#9474;  &#9474;(primary)&#9474;  &#9474; (Kalshi) &#9474;  &#9474;(job apps)&#9474;  &#9474;(finance)&#9474; &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
+&#9474;       &#9474;            &#9474;             &#9474;              &#9474;       &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
+&#9474;  &#9474;Professor&#9474;  &#9474; Sentinel &#9474;  &#9474;   CEO    &#9474;  &#9474;Trainer &#9474; &#9474;
+&#9474;  &#9474;(education)&#9474; &#9474;(infra)  &#9474;  &#9474;(strategy)&#9474;  &#9474;(models)&#9474; &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
+&#9474;       &#9474;            &#9474;             &#9474;              &#9474;       &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
+&#9474;  &#9474;              SQLite Event Bus                      &#9474; &#9474;
+&#9474;  &#9474;     publish &#8594; subscribe &#8594; cross-domain synthesis   &#9474; &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
+&#9474;                       &#9474;                                 &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
+&#9474;  &#9474;              Mem0 Memory Layer                     &#9474; &#9474;
+&#9474;  &#9474;    Personal namespace + Shared coworker org        &#9474; &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
+&#9474;                                                         &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;   &#9474;
+&#9474;  &#9474; OpenClaw &#9474;  &#9474; Telegram &#9474;  &#9474;   HAL Synthesis    &#9474;   &#9474;
+&#9474;  &#9474; Gateway  &#9474;  &#9474;   Bot    &#9474;  &#9474;   (6h heartbeat)   &#9474;   &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;   &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+         &#9474;              &#9474;               &#9474;
+    Tailscale      Clawd HQ        A2A Protocol
+     Mesh          Group Chat     (agent-to-agent)
+</pre>
+    </div>
+  </section>
+
+  <section id="agents">
+    <h2>Agents</h2>
+    <p>Each agent runs as an independent Claude Code instance with its own CLAUDE.md, tools, and schedule. Agents publish events to a shared bus and read from Mem0 for cross-domain context.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Domain</th>
+          <th>Schedule</th>
+          <th>Key Capabilities</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HAL</td>
+          <td>Orchestration</td>
+          <td>Always-on</td>
+          <td>Cross-domain synthesis, event bus coordination</td>
+        </tr>
+        <tr>
+          <td>Trader</td>
+          <td>Prediction Markets</td>
+          <td>4h monitor</td>
+          <td>Kalshi API, ML models, bankroll management</td>
+        </tr>
+        <tr>
+          <td>Recruiter</td>
+          <td>Job Applications</td>
+          <td>4h pipeline</td>
+          <td>Multi-platform automation, resume tailoring</td>
+        </tr>
+        <tr>
+          <td>Banker</td>
+          <td>Personal Finance</td>
+          <td>Daily 6AM</td>
+          <td>BofA integration, expense tracking, budget alerts</td>
+        </tr>
+        <tr>
+          <td>Professor</td>
+          <td>Education</td>
+          <td>On-demand</td>
+          <td>Learning path management, study materials</td>
+        </tr>
+        <tr>
+          <td>CEO</td>
+          <td>Strategy</td>
+          <td>On-demand</td>
+          <td>Cross-agent briefings, strategic planning</td>
+        </tr>
+        <tr>
+          <td>Sentinel</td>
+          <td>Infrastructure</td>
+          <td>Hourly</td>
+          <td>5-machine health checks, auto-recovery</td>
+        </tr>
+        <tr>
+          <td>Trainer</td>
+          <td>ML/Models</td>
+          <td>On-demand</td>
+          <td>Model training, backtesting, calibration</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="event-bus">
+    <h2>Event Bus</h2>
+    <p>Agents communicate through a SQLite-backed publish/subscribe event bus. Any agent can publish events and subscribe to categories relevant to its domain, enabling loose coupling without direct inter-agent dependencies.</p>
+    <p>Events are categorized by type &mdash; <code>decision</code>, <code>alert</code>, <code>state_change</code>, and <code>discovery</code> &mdash; each with severity levels for prioritization. The database runs in WAL (Write-Ahead Logging) mode, allowing concurrent reads and writes from multiple agent processes without contention.</p>
+    <p>HAL consumes the full event stream during its six-hour synthesis cycle, correlating signals across domains. For example, a Trader <code>discovery</code> about a market shift and a Recruiter <code>state_change</code> about application volume can be surfaced together in a single briefing.</p>
+  </section>
+
+  <section id="memory">
+    <h2>Memory</h2>
+    <p>Persistent agent memory is backed by Mem0 Cloud, organized into two namespaces:</p>
+    <ul class="detail-list">
+      <li><strong>Personal namespace</strong> &mdash; Each agent stores and retrieves memories under a shared user ID. Memories persist across sessions and devices, giving agents long-term recall of decisions, discoveries, and context from prior runs.</li>
+      <li><strong>Shared coworker namespace</strong> &mdash; A separate Mem0 organization enables multi-user collaboration. Agents from different operators can read shared knowledge while maintaining isolation of sensitive data.</li>
+      <li><strong>DLP sanitization</strong> &mdash; Before writing to the shared namespace, a sanitization layer strips API keys, email addresses, phone numbers, and database URIs to prevent credential leakage across trust boundaries.</li>
+    </ul>
+    <p>The MCP (Model Context Protocol) integration means any Claude Code session &mdash; on any machine in the Tailscale mesh &mdash; can search and contribute to the same memory pool.</p>
+  </section>
+
+  <section id="infrastructure">
+    <h2>Infrastructure</h2>
+    <p>The system runs across a five-machine Tailscale mesh: a Mac Mini (primary compute), a MacBook Air (browser automation), a DigitalOcean VPS (production job automation), a Windows home server (Docker services), and a GL.iNet router (network edge).</p>
+    <ul class="detail-list">
+      <li><strong>Scheduling</strong> &mdash; Agent runs are managed through macOS LaunchAgents and cron jobs, with each agent on its own cadence. HAL runs a six-hour heartbeat synthesis, Sentinel checks infrastructure hourly, and Banker processes finances daily at 6 AM CST.</li>
+      <li><strong>Docker services</strong> &mdash; Uptime Kuma monitors endpoint availability, Langfuse provides LLM observability and tracing, Beszel tracks system-level metrics, and n8n handles workflow automation.</li>
+      <li><strong>A2A Protocol</strong> &mdash; Google's Agent-to-Agent protocol enables structured queries between agents on different machines. An A2A server on the Mac Mini accepts questions, searches Mem0 for context, and synthesizes answers using Gemini Flash.</li>
+      <li><strong>Communication</strong> &mdash; A Telegram bot bridges mobile access to Claude Code via tmux, with topic-based routing in a group chat (one topic per agent domain).</li>
+    </ul>
+  </section>
+
+  <section id="tech-stack">
+    <h2>Tech Stack</h2>
+    <ul class="stack-list">
+      <li>
+        <span class="stack-label">Orchestration</span>
+        <span class="stack-value">OpenClaw gateway, LaunchAgents, cron</span>
+      </li>
+      <li>
+        <span class="stack-label">AI Models</span>
+        <span class="stack-value">Claude (Opus/Sonnet), Gemini Flash, Mistral Large</span>
+      </li>
+      <li>
+        <span class="stack-label">Memory</span>
+        <span class="stack-value">Mem0 Cloud (personal + shared orgs)</span>
+      </li>
+      <li>
+        <span class="stack-label">Communication</span>
+        <span class="stack-value">Telegram Bot API, A2A Protocol</span>
+      </li>
+      <li>
+        <span class="stack-label">Monitoring</span>
+        <span class="stack-value">Uptime Kuma, Beszel, Langfuse</span>
+      </li>
+      <li>
+        <span class="stack-label">Networking</span>
+        <span class="stack-value">Tailscale mesh (5 machines)</span>
+      </li>
+      <li>
+        <span class="stack-label">Data</span>
+        <span class="stack-value">SQLite (event bus, positions), JSON configs</span>
+      </li>
+      <li>
+        <span class="stack-label">Markets</span>
+        <span class="stack-value">Kalshi API (RSA-signed)</span>
+      </li>
+      <li>
+        <span class="stack-label">Jobs</span>
+        <span class="stack-value">Playwright, nodriver automation</span>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    Zach Abraham &middot; <a href="https://github.com/zach-abraham">github.com/zach-abraham</a> &middot; 2026
+  </footer>
+
+</main>
+
+</body>
+</html>
