@@ -4,38 +4,15 @@ A multi-agent AI orchestration platform running on a Mac Mini, coordinating 8 sp
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Mac Mini (M2)                         │
-│  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
-│  │   HAL   │  │  Trader  │  │ Recruiter│  │ Banker  │ │
-│  │(primary)│  │ (Kalshi) │  │(job apps)│  │(finance)│ │
-│  └────┬────┘  └────┬─────┘  └────┬─────┘  └────┬────┘ │
-│       │            │             │              │       │
-│  ┌────┴────┐  ┌────┴─────┐  ┌───┴──────┐  ┌───┴────┐ │
-│  │Professor│  │ Sentinel │  │   CEO    │  │Trainer │ │
-│  │(education)│ │(infra)  │  │(strategy)│  │ (gym)  │ │
-│  └────┬────┘  └────┬─────┘  └────┬─────┘  └───┬────┘ │
-│       │            │             │              │       │
-│  ┌────┴────────────┴─────────────┴──────────────┴────┐ │
-│  │              SQLite Event Bus                      │ │
-│  │     publish → subscribe → cross-domain synthesis   │ │
-│  └────────────────────┬──────────────────────────────┘ │
-│                       │                                 │
-│  ┌────────────────────┴──────────────────────────────┐ │
-│  │              Mem0 Memory Layer                     │ │
-│  │    Personal namespace + Shared coworker org        │ │
-│  └───────────────────────────────────────────────────┘ │
-│                                                         │
-│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐   │
-│  │ OpenClaw │  │ Telegram │  │   HAL Synthesis    │   │
-│  │ Gateway  │  │   Bot    │  │   (6h heartbeat)   │   │
-│  └──────────┘  └──────────┘  └────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
-         │              │               │
-    Tailscale      Clawd HQ        A2A Protocol
-     Mesh          Group Chat     (agent-to-agent)
-```
+<picture>
+  <img alt="System Topology" src="diagrams/system-topology.svg" width="100%">
+</picture>
+
+### Data Flow
+
+<picture>
+  <img alt="Data Flow" src="diagrams/data-flow.svg" width="100%">
+</picture>
 
 ## Agents
 
