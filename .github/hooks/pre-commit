@@ -1,0 +1,29 @@
+#!/bin/bash
+# Scan for potential secrets before committing
+PATTERNS=(
+    '[a-zA-Z0-9]{20,}' # Long alphanumeric strings (potential API keys) - too broad, skip
+    'AIza[0-9A-Za-z_-]{35}'  # Google API keys
+    'm0-[a-zA-Z0-9]{30,}'    # Mem0 API keys
+    'ghp_[a-zA-Z0-9]{36}'    # GitHub PATs
+    'gho_[a-zA-Z0-9]{36}'    # GitHub OAuth
+    'sk-[a-zA-Z0-9]{40,}'    # OpenAI keys
+    '[0-9]+:AA[A-Za-z0-9_-]{33}'  # Telegram bot tokens
+    'op_[a-zA-Z0-9]{26}'     # 1Password tokens
+)
+
+FOUND=0
+for pattern in "${PATTERNS[@]}"; do
+    MATCHES=$(git diff --cached --diff-filter=ACM -U0 | grep -E "$pattern" 2>/dev/null)
+    if [ -n "$MATCHES" ]; then
+        echo "POTENTIAL SECRET DETECTED: $pattern"
+        echo "$MATCHES"
+        FOUND=1
+    fi
+done
+
+if [ $FOUND -eq 1 ]; then
+    echo ""
+    echo "Commit blocked — potential secrets found. Review and remove before committing."
+    exit 1
+fi
+exit 0

@@ -1,0 +1,72 @@
+graph TD
+    subgraph External["External Services"]
+        MEM0_CLOUD["Mem0 Cloud<br/>(Memory API)"]
+        TELEGRAM["Telegram<br/>(Clawd HQ Group)"]
+        KALSHI["Kalshi API<br/>(Prediction Markets)"]
+        GITHUB["GitHub<br/>(Repos & CI)"]
+    end
+
+    subgraph TAILSCALE["Tailscale Mesh Network"]
+        subgraph MACMINI["Mac Mini (M2) — 100.115.235.86"]
+            OC_GW["OpenClaw Gateway"]
+            DOCKER["Docker Stack<br/>(Uptime Kuma, Beszel,<br/>Langfuse, n8n)"]
+            EVENTBUS["Event Bus<br/>(SQLite)"]
+            MEM0_SSE["Mem0 SSE Proxy<br/>(:8051)"]
+            A2A["A2A Server<br/>(:9999)"]
+            BLUEBUB["BlueBubbles<br/>(:1234)"]
+        end
+
+        subgraph MBA["MacBook Air — Dev Machine"]
+            CLAUDE_CODE["Claude Code<br/>(Primary IDE)"]
+            CHROME_DBG["Chrome Debug<br/>(:9222)"]
+        end
+
+        subgraph GAMING["Gaming PC — Windows"]
+            DOCKER_WIN["Docker Workloads"]
+        end
+
+        subgraph VPS["VPS (DigitalOcean) — 100.104.163.128"]
+            JOB_LEGION["job-legion<br/>Dashboard (:8484)"]
+            BETTING_LAB["betting-lab"]
+        end
+
+        subgraph ROUTER["GL-iNet Beryl AX — 192.168.8.1"]
+            ADGUARD["AdGuard Home"]
+            REPEATER["WiFi Repeater<br/>(WhiteSky-Eado)"]
+        end
+    end
+
+    %% Tailscale connections
+    MBA -->|Tailscale| MACMINI
+    GAMING -->|Tailscale| MACMINI
+    VPS -->|Tailscale| MACMINI
+    ROUTER -->|LAN| MACMINI
+
+    %% External connections from Mac Mini
+    MEM0_SSE -->|SSE + Cloudflare Tunnel| MEM0_CLOUD
+    OC_GW -->|Bot API| TELEGRAM
+    A2A -->|Gemini + Mem0| MEM0_CLOUD
+    JOB_LEGION -->|SSH Tunnel| CHROME_DBG
+
+    %% External connections from VPS
+    BETTING_LAB -->|REST API| KALSHI
+    JOB_LEGION -->|Scraping| GITHUB
+
+    %% Claude Code connections
+    CLAUDE_CODE -->|MCP| MEM0_CLOUD
+    CLAUDE_CODE -->|SSH| MACMINI
+
+    %% Styles
+    classDef macmini fill:#2d3748,stroke:#4a5568,color:#e2e8f0,stroke-width:2px
+    classDef mba fill:#2c5282,stroke:#3182ce,color:#e2e8f0,stroke-width:2px
+    classDef gaming fill:#553c9a,stroke:#805ad5,color:#e2e8f0,stroke-width:2px
+    classDef vps fill:#9b2c2c,stroke:#e53e3e,color:#e2e8f0,stroke-width:2px
+    classDef router fill:#2f855a,stroke:#48bb78,color:#e2e8f0,stroke-width:2px
+    classDef external fill:#b7791f,stroke:#d69e2e,color:#1a202c,stroke-width:2px
+
+    class OC_GW,DOCKER,EVENTBUS,MEM0_SSE,A2A,BLUEBUB macmini
+    class CLAUDE_CODE,CHROME_DBG mba
+    class DOCKER_WIN gaming
+    class JOB_LEGION,BETTING_LAB vps
+    class ADGUARD,REPEATER router
+    class MEM0_CLOUD,TELEGRAM,KALSHI,GITHUB external

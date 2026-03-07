@@ -1,0 +1,68 @@
+{
+  "gateway": {
+    "port": 18789,
+    "host": "0.0.0.0"
+  },
+  "agents": {
+    "hal": {
+      "model": "claude-opus-4",
+      "context": "CLAUDE.md",
+      "telegram_topic": 3783,
+      "mem0_agent_id": "hal"
+    },
+    "trader": {
+      "model": "claude-sonnet-4",
+      "context": "betting-lab/CLAUDE.md",
+      "telegram_topic": 5,
+      "mem0_agent_id": "trader",
+      "schedule": "*/4 * * * *"
+    },
+    "recruiter": {
+      "model": "claude-sonnet-4",
+      "context": "job-legion/CLAUDE.md",
+      "telegram_topic": 6,
+      "mem0_agent_id": "recruiter"
+    },
+    "banker": {
+      "model": "claude-sonnet-4",
+      "context": "finance/CLAUDE.md",
+      "telegram_topic": 7,
+      "mem0_agent_id": "banker"
+    },
+    "professor": {
+      "model": "claude-sonnet-4",
+      "context": "education/CLAUDE.md",
+      "telegram_topic": 8,
+      "mem0_agent_id": "professor"
+    },
+    "ceo": {
+      "model": "claude-opus-4",
+      "context": "CLAUDE.md",
+      "telegram_topic": 9,
+      "mem0_agent_id": "ceo"
+    },
+    "sentinel": {
+      "model": "claude-haiku-4",
+      "context": "sentinel/CLAUDE.md",
+      "telegram_topic": 10,
+      "mem0_agent_id": "sentinel",
+      "schedule": "0 * * * *"
+    },
+    "trainer": {
+      "model": "claude-sonnet-4",
+      "context": "trainer/CLAUDE.md",
+      "mem0_agent_id": "trainer"
+    }
+  },
+  "telegram": {
+    "bot_token": "$TELEGRAM_BOT_TOKEN",
+    "group_id": "$TELEGRAM_GROUP_ID"
+  },
+  "mem0": {
+    "api_key": "$MEM0_API_KEY",
+    "user_id": "$MEM0_USER_ID"
+  },
+  "event_bus": {
+    "db_path": "~/clawd/eventbus/events.db"
+  }
+}

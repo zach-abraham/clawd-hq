@@ -1,0 +1,101 @@
+flowchart TD
+    subgraph CLI["CLI Interface"]
+        PUB["eb publish<br/>--agent --category --severity"]
+        FEED["eb feed<br/>--agent --since --unseen"]
+        MARK["eb mark-seen<br/>--agent --event-id"]
+    end
+
+    subgraph AGENTS_PUB["Publishing Agents"]
+        A_TRADER["Trader"]
+        A_RECRUITER["Recruiter"]
+        A_BANKER["Banker"]
+        A_PROFESSOR["Professor"]
+        A_CEO["CEO"]
+        A_SENTINEL["Sentinel"]
+        A_TRAINER["Trainer"]
+        A_HAL["HAL"]
+    end
+
+    subgraph CATEGORIES["Event Categories"]
+        CAT_DECISION["decision<br/>(choices made)"]
+        CAT_ALERT["alert<br/>(attention needed)"]
+        CAT_STATE["state_change<br/>(status updates)"]
+        CAT_DISCOVERY["discovery<br/>(new findings)"]
+    end
+
+    subgraph SQLITE["SQLite Database"]
+        TBL_EVENTS[("events<br/>───────────<br/>id INTEGER PK<br/>agent TEXT<br/>category TEXT<br/>severity TEXT<br/>title TEXT<br/>body TEXT<br/>metadata JSON<br/>created_at TIMESTAMP")]
+        TBL_READS[("event_reads<br/>───────────<br/>event_id INTEGER FK<br/>agent TEXT<br/>read_at TIMESTAMP<br/>UNIQUE(event_id, agent)")]
+    end
+
+    subgraph ESCALATION["Severity Escalation"]
+        SEV_INFO["info<br/>(logged only)"]
+        SEV_WARN["warn<br/>(+ Mem0 broadcast)"]
+        SEV_CRITICAL["critical<br/>(+ Mem0 broadcast<br/>+ Telegram alert)"]
+    end
+
+    subgraph CONSUMERS["Consumers"]
+        SYNTHESIS["HAL Synthesis<br/>(reads unseen events)"]
+        MONITORING["Sentinel<br/>(watches for alerts)"]
+    end
+
+    %% Agents publish via CLI
+    A_TRADER --> PUB
+    A_RECRUITER --> PUB
+    A_BANKER --> PUB
+    A_PROFESSOR --> PUB
+    A_CEO --> PUB
+    A_SENTINEL --> PUB
+    A_TRAINER --> PUB
+    A_HAL --> PUB
+
+    %% CLI writes to DB with category
+    PUB --> CAT_DECISION
+    PUB --> CAT_ALERT
+    PUB --> CAT_STATE
+    PUB --> CAT_DISCOVERY
+
+    %% Categories stored in events table
+    CAT_DECISION --> TBL_EVENTS
+    CAT_ALERT --> TBL_EVENTS
+    CAT_STATE --> TBL_EVENTS
+    CAT_DISCOVERY --> TBL_EVENTS
+
+    %% Severity routing
+    TBL_EVENTS --> SEV_INFO
+    TBL_EVENTS --> SEV_WARN
+    TBL_EVENTS --> SEV_CRITICAL
+
+    SEV_WARN -->|broadcast| MEM0_STORE["Mem0 Cloud"]
+    SEV_CRITICAL -->|broadcast| MEM0_STORE
+    SEV_CRITICAL -->|alert| TG_ALERT["Telegram Alert"]
+
+    %% Consumers read via CLI
+    FEED --> TBL_EVENTS
+    FEED --> TBL_READS
+    SYNTHESIS --> FEED
+    MONITORING --> FEED
+
+    %% Mark seen updates reads table
+    MARK --> TBL_READS
+
+    %% Styles
+    classDef cli fill:#2c5282,stroke:#63b3ed,color:#e2e8f0,stroke-width:2px
+    classDef agent fill:#2d3748,stroke:#a0aec0,color:#e2e8f0,stroke-width:1px
+    classDef category fill:#553c9a,stroke:#b794f4,color:#e2e8f0,stroke-width:2px
+    classDef db fill:#744210,stroke:#d69e2e,color:#fefcbf,stroke-width:2px
+    classDef sev_low fill:#2f855a,stroke:#68d391,color:#e2e8f0,stroke-width:1px
+    classDef sev_med fill:#b7791f,stroke:#f6e05e,color:#1a202c,stroke-width:2px
+    classDef sev_high fill:#9b2c2c,stroke:#fc8181,color:#e2e8f0,stroke-width:3px
+    classDef consumer fill:#285e61,stroke:#4fd1c5,color:#e2e8f0,stroke-width:2px
+    classDef external fill:#b7791f,stroke:#f6e05e,color:#1a202c,stroke-width:2px
+
+    class PUB,FEED,MARK cli
+    class A_TRADER,A_RECRUITER,A_BANKER,A_PROFESSOR,A_CEO,A_SENTINEL,A_TRAINER,A_HAL agent
+    class CAT_DECISION,CAT_ALERT,CAT_STATE,CAT_DISCOVERY category
+    class TBL_EVENTS,TBL_READS db
+    class SEV_INFO sev_low
+    class SEV_WARN sev_med
+    class SEV_CRITICAL sev_high
+    class SYNTHESIS,MONITORING consumer
+    class MEM0_STORE,TG_ALERT external

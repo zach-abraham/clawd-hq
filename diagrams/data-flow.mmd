@@ -1,0 +1,83 @@
+flowchart LR
+    subgraph INGESTION["Background Ingestion"]
+        ING_MARKET["Market Data<br/>Scraper"]
+        ING_NEWS["News &<br/>RSS Feeds"]
+        ING_JOBS["Job Board<br/>Scrapers"]
+        ING_FINANCE["Financial<br/>Data Feeds"]
+    end
+
+    subgraph AGENTS["Agent Layer"]
+        HAL["HAL<br/>(Orchestrator)"]
+        TRADER["Trader<br/>(Markets)"]
+        RECRUITER["Recruiter<br/>(Jobs)"]
+        BANKER["Banker<br/>(Finance)"]
+        PROFESSOR["Professor<br/>(Education)"]
+        CEO["CEO<br/>(Strategy)"]
+        SENTINEL["Sentinel<br/>(Monitoring)"]
+        TRAINER["Trainer<br/>(ML Pipeline)"]
+    end
+
+    subgraph CORE["Core Infrastructure"]
+        EVENTBUS[("Event Bus<br/>(SQLite)")]
+        MEM0[("Mem0<br/>(Shared Memory)")]
+    end
+
+    subgraph SYNTHESIS["HAL Synthesis"]
+        SYNTH["Synthesis<br/>Engine"]
+    end
+
+    subgraph OUTPUT["Output Channels"]
+        TG["Telegram<br/>(Clawd HQ)"]
+        MEM0_OUT["Mem0<br/>(Persistent)"]
+    end
+
+    %% Ingestion feeds into agents
+    ING_MARKET --> TRADER
+    ING_NEWS --> TRADER
+    ING_NEWS --> CEO
+    ING_JOBS --> RECRUITER
+    ING_FINANCE --> BANKER
+
+    %% All agents publish to Event Bus
+    HAL -->|publish| EVENTBUS
+    TRADER -->|publish| EVENTBUS
+    RECRUITER -->|publish| EVENTBUS
+    BANKER -->|publish| EVENTBUS
+    PROFESSOR -->|publish| EVENTBUS
+    CEO -->|publish| EVENTBUS
+    SENTINEL -->|publish| EVENTBUS
+    TRAINER -->|publish| EVENTBUS
+
+    %% All agents read/write Mem0
+    HAL <-->|read/write| MEM0
+    TRADER <-->|read/write| MEM0
+    RECRUITER <-->|read/write| MEM0
+    BANKER <-->|read/write| MEM0
+    PROFESSOR <-->|read/write| MEM0
+    CEO <-->|read/write| MEM0
+    SENTINEL <-->|read/write| MEM0
+    TRAINER <-->|read/write| MEM0
+
+    %% Synthesis reads from both
+    EVENTBUS -->|unseen events| SYNTH
+    MEM0 -->|context queries| SYNTH
+
+    %% Synthesis outputs
+    SYNTH -->|daily briefing| TG
+    SYNTH -->|alerts| TG
+    SYNTH -->|consolidated state| MEM0_OUT
+
+    %% Styles
+    classDef agent fill:#2d3748,stroke:#63b3ed,color:#e2e8f0,stroke-width:2px
+    classDef hal fill:#2c5282,stroke:#90cdf4,color:#e2e8f0,stroke-width:3px
+    classDef core fill:#553c9a,stroke:#b794f4,color:#e2e8f0,stroke-width:2px
+    classDef ingestion fill:#2f855a,stroke:#68d391,color:#e2e8f0,stroke-width:1px
+    classDef output fill:#b7791f,stroke:#f6e05e,color:#1a202c,stroke-width:2px
+    classDef synth fill:#9b2c2c,stroke:#fc8181,color:#e2e8f0,stroke-width:2px
+
+    class HAL hal
+    class TRADER,RECRUITER,BANKER,PROFESSOR,CEO,SENTINEL,TRAINER agent
+    class EVENTBUS,MEM0 core
+    class ING_MARKET,ING_NEWS,ING_JOBS,ING_FINANCE ingestion
+    class TG,MEM0_OUT output
+    class SYNTH synth

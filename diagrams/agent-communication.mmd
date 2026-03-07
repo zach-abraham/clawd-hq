@@ -1,0 +1,83 @@
+graph LR
+    subgraph HAL_NODE["HAL (Orchestrator)"]
+        HAL["HAL"]
+    end
+
+    subgraph CHANNEL_EB["Event Bus — Async Pub/Sub"]
+        EB["Event Bus<br/>(SQLite)"]
+    end
+
+    subgraph CHANNEL_MEM0["Mem0 — Persistent Memory"]
+        MEM0["Mem0 Cloud<br/>(Shared State)"]
+    end
+
+    subgraph CHANNEL_A2A["A2A Protocol — Sync Queries"]
+        A2A["A2A Server<br/>(:9999)"]
+    end
+
+    subgraph DOMAIN_AGENTS["Domain Agents"]
+        TRADER["Trader"]
+        RECRUITER["Recruiter"]
+        BANKER["Banker"]
+        PROFESSOR["Professor"]
+        CEO["CEO"]
+        SENTINEL["Sentinel"]
+        TRAINER["Trainer"]
+    end
+
+    %% HAL connects to all three channels
+    HAL <-->|"publish / subscribe"| EB
+    HAL <-->|"read / write memories"| MEM0
+    HAL <-->|"query / respond"| A2A
+
+    %% All domain agents use Event Bus
+    TRADER <-->|pub/sub| EB
+    RECRUITER <-->|pub/sub| EB
+    BANKER <-->|pub/sub| EB
+    PROFESSOR <-->|pub/sub| EB
+    CEO <-->|pub/sub| EB
+    SENTINEL <-->|pub/sub| EB
+    TRAINER <-->|pub/sub| EB
+
+    %% All domain agents use Mem0
+    TRADER <-->|memories| MEM0
+    RECRUITER <-->|memories| MEM0
+    BANKER <-->|memories| MEM0
+    PROFESSOR <-->|memories| MEM0
+    CEO <-->|memories| MEM0
+    SENTINEL <-->|memories| MEM0
+    TRAINER <-->|memories| MEM0
+
+    %% Select agents use A2A for synchronous queries
+    TRADER <-->|sync query| A2A
+    SENTINEL <-->|sync query| A2A
+    CEO <-->|sync query| A2A
+
+    %% External A2A peer
+    PEER["External A2A Peer<br/>(Coworker Agent)"] <-->|"A2A Protocol<br/>(Tailscale)"| A2A
+
+    %% Channel descriptions as notes
+    EB_NOTE["Async, fire-and-forget<br/>All agents publish events<br/>HAL Synthesis reads unseen"]
+    MEM0_NOTE["Persistent cross-session<br/>Shared context & decisions<br/>DLP-sanitized for sharing"]
+    A2A_NOTE["Synchronous request/response<br/>Cross-agent queries<br/>Tailscale-accessible"]
+
+    EB -.- EB_NOTE
+    MEM0 -.- MEM0_NOTE
+    A2A -.- A2A_NOTE
+
+    %% Styles
+    classDef hal fill:#2c5282,stroke:#90cdf4,color:#e2e8f0,stroke-width:3px
+    classDef agent fill:#2d3748,stroke:#a0aec0,color:#e2e8f0,stroke-width:2px
+    classDef eventbus fill:#553c9a,stroke:#b794f4,color:#e2e8f0,stroke-width:2px
+    classDef mem0 fill:#2f855a,stroke:#68d391,color:#e2e8f0,stroke-width:2px
+    classDef a2a fill:#9b2c2c,stroke:#fc8181,color:#e2e8f0,stroke-width:2px
+    classDef peer fill:#b7791f,stroke:#f6e05e,color:#1a202c,stroke-width:2px
+    classDef note fill:#1a202c,stroke:#4a5568,color:#a0aec0,stroke-width:1px,font-size:11px
+
+    class HAL hal
+    class TRADER,RECRUITER,BANKER,PROFESSOR,CEO,SENTINEL,TRAINER agent
+    class EB eventbus
+    class MEM0 mem0
+    class A2A a2a
+    class PEER peer
+    class EB_NOTE,MEM0_NOTE,A2A_NOTE note
