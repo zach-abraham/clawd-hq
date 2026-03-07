@@ -125,6 +125,95 @@ p {
   white-space: pre;
 }
 
+/* SVG diagram container */
+.diagram-svg {
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+}
+
+.diagram-svg img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Section fade-in on scroll */
+section {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: sectionFadeIn 0.5s ease-out forwards;
+}
+
+section:nth-child(1) { animation-delay: 0s; }
+section:nth-child(2) { animation-delay: 0.08s; }
+section:nth-child(3) { animation-delay: 0.16s; }
+section:nth-child(4) { animation-delay: 0.24s; }
+section:nth-child(5) { animation-delay: 0.32s; }
+section:nth-child(6) { animation-delay: 0.40s; }
+
+@keyframes sectionFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero header */
+.hero {
+  text-align: center;
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #21262d;
+}
+
+.hero h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f0f6fc;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.hero .tagline {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 14px;
+  color: #58a6ff;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.hero .status-badges {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #8b949e;
+  padding: 4px 12px;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  background: #161b22;
+}
+
+.status-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green { background: #39d353; }
+.dot-blue { background: #58a6ff; }
+.dot-orange { background: #f78166; }
+
 /* Table */
 table {
   width: 100%;
@@ -326,8 +415,10 @@ footer a:hover {
   </div>
   <nav>
     <a href="#architecture">Architecture</a>
+    <a href="#data-flow">Data Flow</a>
     <a href="#agents">Agents</a>
     <a href="#event-bus">Event Bus</a>
+    <a href="#communication">Communication</a>
     <a href="#memory">Memory</a>
     <a href="#infrastructure">Infrastructure</a>
     <a href="#tech-stack">Tech Stack</a>
@@ -336,42 +427,29 @@ footer a:hover {
 
 <main class="main">
 
+  <div class="hero">
+    <h1>Clawd HQ</h1>
+    <div class="tagline">MULTI-AGENT AI ORCHESTRATION</div>
+    <div class="status-badges">
+      <span class="status-badge"><span class="dot dot-green"></span> 8 agents live</span>
+      <span class="status-badge"><span class="dot dot-blue"></span> 5-machine mesh</span>
+      <span class="status-badge"><span class="dot dot-orange"></span> 6h synthesis cycle</span>
+    </div>
+  </div>
+
   <section id="architecture">
     <h2>Architecture</h2>
     <p>Clawd HQ is a multi-agent AI system running on a Mac Mini (M2). Eight specialized agents operate autonomously across domains &mdash; prediction markets, job applications, personal finance, infrastructure monitoring, education, and strategic planning. They coordinate through a shared SQLite event bus and a persistent memory layer, with HAL serving as the primary orchestrator that synthesizes cross-domain intelligence every six hours.</p>
-    <div class="diagram">
-<pre>
-&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-&#9474;                    Mac Mini (M2)                         &#9474;
-&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
-&#9474;  &#9474;   HAL   &#9474;  &#9474;  Trader  &#9474;  &#9474; Recruiter&#9474;  &#9474; Banker  &#9474; &#9474;
-&#9474;  &#9474;(primary)&#9474;  &#9474; (Kalshi) &#9474;  &#9474;(job apps)&#9474;  &#9474;(finance)&#9474; &#9474;
-&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
-&#9474;       &#9474;            &#9474;             &#9474;              &#9474;       &#9474;
-&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
-&#9474;  &#9474;Professor&#9474;  &#9474; Sentinel &#9474;  &#9474;   CEO    &#9474;  &#9474;Trainer &#9474; &#9474;
-&#9474;  &#9474;(education)&#9474; &#9474;(infra)  &#9474;  &#9474;(strategy)&#9474;  &#9474; (gym)  &#9474; &#9474;
-&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
-&#9474;       &#9474;            &#9474;             &#9474;              &#9474;       &#9474;
-&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
-&#9474;  &#9474;              SQLite Event Bus                      &#9474; &#9474;
-&#9474;  &#9474;     publish &#8594; subscribe &#8594; cross-domain synthesis   &#9474; &#9474;
-&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
-&#9474;                       &#9474;                                 &#9474;
-&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488; &#9474;
-&#9474;  &#9474;              Mem0 Memory Layer                     &#9474; &#9474;
-&#9474;  &#9474;    Personal namespace + Shared coworker org        &#9474; &#9474;
-&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496; &#9474;
-&#9474;                                                         &#9474;
-&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;   &#9474;
-&#9474;  &#9474; OpenClaw &#9474;  &#9474; Telegram &#9474;  &#9474;   HAL Synthesis    &#9474;   &#9474;
-&#9474;  &#9474; Gateway  &#9474;  &#9474;   Bot    &#9474;  &#9474;   (6h heartbeat)   &#9474;   &#9474;
-&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;   &#9474;
-&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
-         &#9474;              &#9474;               &#9474;
-    Tailscale      Clawd HQ        A2A Protocol
-     Mesh          Group Chat     (agent-to-agent)
-</pre>
+    <div class="diagram-svg">
+      <img src="diagrams/system-topology.svg" alt="Infrastructure Topology">
+    </div>
+  </section>
+
+  <section id="data-flow">
+    <h2>Data Flow</h2>
+    <p>Data flows from external sources through specialized agents into a shared event bus, where HAL synthesizes cross-domain patterns and distributes insights.</p>
+    <div class="diagram-svg">
+      <img src="diagrams/data-flow.svg" alt="Data Flow Architecture">
     </div>
   </section>
 
@@ -444,7 +522,10 @@ footer a:hover {
     <h2>Event Bus</h2>
     <p>Agents communicate through a SQLite-backed publish/subscribe event bus. Any agent can publish events and subscribe to categories relevant to its domain, enabling loose coupling without direct inter-agent dependencies.</p>
     <p>Events are categorized by type &mdash; <code>decision</code>, <code>alert</code>, <code>state_change</code>, and <code>discovery</code> &mdash; each with severity levels for prioritization. The database runs in WAL (Write-Ahead Logging) mode, allowing concurrent reads and writes from multiple agent processes without contention.</p>
-    <p>HAL consumes the full event stream during its six-hour synthesis cycle, correlating signals across domains. For example, a Trader <code>discovery</code> about a market shift and a Recruiter <code>state_change</code> about application volume can be surfaced together in a single briefing.</p>
+    <div class="diagram-svg">
+      <img src="diagrams/event-bus.svg" alt="Event Bus Architecture">
+    </div>
+    <p style="margin-top: 12px;">HAL consumes the full event stream during its six-hour synthesis cycle, correlating signals across domains. For example, a Trader <code>discovery</code> about a market shift and a Recruiter <code>state_change</code> about application volume can be surfaced together in a single briefing.</p>
   </section>
 
   <section id="memory">
@@ -456,6 +537,14 @@ footer a:hover {
       <li><strong>DLP sanitization</strong> &mdash; Before writing to the shared namespace, a sanitization layer strips API keys, email addresses, phone numbers, and database URIs to prevent credential leakage across trust boundaries.</li>
     </ul>
     <p>The MCP (Model Context Protocol) integration means any Claude Code session &mdash; on any machine in the Tailscale mesh &mdash; can search and contribute to the same memory pool.</p>
+  </section>
+
+  <section id="communication">
+    <h2>Agent Communication</h2>
+    <p>Agents interact through three complementary channels: the event bus for structured async messaging, Mem0 for persistent memory sharing, and the A2A protocol for synchronous cross-machine queries.</p>
+    <div class="diagram-svg">
+      <img src="diagrams/agent-communication.svg" alt="Agent Communication Patterns">
+    </div>
   </section>
 
   <section id="infrastructure">
