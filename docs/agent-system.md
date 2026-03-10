@@ -128,15 +128,7 @@ mem0.add(
 
 Each agent posts to a dedicated topic in the Clawd HQ Telegram group. This provides a human-readable activity stream without requiring dashboard access.
 
-| Agent      | Topic ID |
-|------------|----------|
-| Trader     | 5        |
-| Recruiter  | 6        |
-| Banker     | 7        |
-| Professor  | 8        |
-| CEO        | 9        |
-| Sentinel   | 10       |
-| Claude Code| 90       |
+Each agent posts to a unique topic ID configured in the OpenClaw template. Topic IDs are assigned per-agent in the deployment config.
 
 ## Communication Patterns
 
