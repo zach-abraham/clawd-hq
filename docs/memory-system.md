@@ -31,7 +31,7 @@ The personal namespace stores cross-device knowledge for a single user. Any devi
 | Property       | Value                          |
 |----------------|--------------------------------|
 | API Key        | `$MEM0_PERSONAL_API_KEY`       |
-| user_id        | `zabraham`                     |
+| user_id        | `<user_id>`                    |
 | Access         | All personal devices via MCP   |
 | Content        | Preferences, discoveries, debugging solutions, environment details |
 
@@ -190,15 +190,15 @@ Claude.ai (browser)
 Cloudflare Tunnel (dynamic URL)
      |
      v
-Mac Mini SSE Proxy (port 8051)
+Mac Mini SSE Proxy
      |
      v
 Mem0 Cloud API
 ```
 
 Two LaunchAgents maintain this:
-- `ai.mem0.mcp-sse` --- SSE proxy server on port 8051
-- `com.cloudflare.mem0-tunnel` --- Cloudflare quick tunnel (URL logged to `/tmp/cloudflared-mem0.log`)
+- `ai.mem0.mcp-sse` --- SSE proxy server
+- `com.cloudflare.mem0-tunnel` --- Cloudflare quick tunnel
 
 ## Memory Lifecycle
 
