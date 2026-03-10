@@ -36,12 +36,11 @@ Clawd HQ is a multi-agent AI system running on a distributed infrastructure anch
 
 The Mac Mini serves as the central hub. All eight agents run here via LaunchAgent-scheduled Claude Code sessions. Key responsibilities:
 
-| Component          | Port  | Purpose                              |
-|--------------------|-------|--------------------------------------|
-| OpenClaw Gateway   | 18789 | Unified LLM API routing              |
-| Mem0 SSE Proxy     | 8051  | Memory access for Claude.ai          |
-| A2A Protocol Server| 9999  | Cross-machine agent queries           |
-| BlueBubbles        | 1234  | SMS verification via iMessage         |
+| Component          | Purpose                              |
+|--------------------|--------------------------------------|
+| OpenClaw Gateway   | Unified LLM API routing              |
+| Mem0 SSE Proxy     | Memory access for Claude.ai          |
+| A2A Protocol Server| Cross-machine agent queries           |
 
 ## OpenClaw Gateway
 
@@ -51,7 +50,7 @@ A local proxy that normalizes requests across multiple LLM providers, allowing a
 Agent Request
      |
      v
-OpenClaw (port 18789)
+OpenClaw Gateway
      |
      +---> Claude (Anthropic API)     # Primary reasoning
      +---> Gemini 2.5 Flash (Google)  # Synthesis, high-throughput
@@ -59,11 +58,6 @@ OpenClaw (port 18789)
 ```
 
 Configuration is provider-agnostic. Agents specify intent (e.g., `fast`, `reasoning`, `cheap`) and the gateway routes accordingly.
-
-**Environment variables:**
-- `$ANTHROPIC_API_KEY` --- Claude access
-- `$GEMINI_API_KEY` --- Google AI Studio
-- `$MISTRAL_API_KEY` --- Mistral platform
 
 ## Tailscale Mesh Network
 
@@ -77,18 +71,18 @@ Five machines connected via Tailscale for secure, zero-config networking:
 | VPS          | Production runtime  | Job automation, public-facing bots  |
 | Router       | Network edge        | AdGuard Home, Tailscale exit node   |
 
-All inter-machine communication uses Tailscale IPs (`100.x.x.x`), eliminating port forwarding and firewall complexity.
+All inter-machine communication uses Tailscale, eliminating port forwarding and firewall complexity.
 
 ## Docker Services (via Colima)
 
 Docker runs on the Mac Mini through Colima. Four services provide observability and workflow automation:
 
-| Service      | Port | Purpose                                   |
-|--------------|------|-------------------------------------------|
-| Uptime Kuma  | 3001 | Service health monitoring, alerting       |
-| Langfuse     | 3000 | LLM call tracing, cost tracking          |
-| Beszel       | 8090 | System metrics (CPU, memory, disk)        |
-| n8n          | 5678 | Workflow automation, webhook integrations |
+| Service      | Purpose                                   |
+|--------------|-------------------------------------------|
+| Uptime Kuma  | Service health monitoring, alerting       |
+| Langfuse     | LLM call tracing, cost tracking          |
+| Beszel       | System metrics (CPU, memory, disk)        |
+| n8n          | Workflow automation, webhook integrations |
 
 Langfuse runs as a 6-container stack (app, worker, PostgreSQL, Redis, ClickHouse, MinIO).
 
