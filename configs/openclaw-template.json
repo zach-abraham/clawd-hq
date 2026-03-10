@@ -1,50 +1,50 @@
 {
   "gateway": {
-    "port": 18789,
+    "port": "<port>",
     "host": "0.0.0.0"
   },
   "agents": {
     "hal": {
       "model": "claude-opus-4",
       "context": "CLAUDE.md",
-      "telegram_topic": 3783,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "hal"
     },
     "trader": {
       "model": "claude-sonnet-4",
       "context": "betting-lab/CLAUDE.md",
-      "telegram_topic": 5,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "trader",
       "schedule": "*/4 * * * *"
     },
     "recruiter": {
       "model": "claude-sonnet-4",
       "context": "job-legion/CLAUDE.md",
-      "telegram_topic": 6,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "recruiter"
     },
     "banker": {
       "model": "claude-sonnet-4",
       "context": "finance/CLAUDE.md",
-      "telegram_topic": 7,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "banker"
     },
     "professor": {
       "model": "claude-sonnet-4",
       "context": "education/CLAUDE.md",
-      "telegram_topic": 8,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "professor"
     },
     "ceo": {
       "model": "claude-opus-4",
       "context": "CLAUDE.md",
-      "telegram_topic": 9,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "ceo"
     },
     "sentinel": {
       "model": "claude-haiku-4",
       "context": "sentinel/CLAUDE.md",
-      "telegram_topic": 10,
+      "telegram_topic": "<topic_id>",
       "mem0_agent_id": "sentinel",
       "schedule": "0 * * * *"
     },
@@ -63,6 +63,6 @@
     "user_id": "$MEM0_USER_ID"
   },
   "event_bus": {
-    "db_path": "~/clawd/eventbus/events.db"
+    "db_path": "$PROJECT_ROOT/eventbus/events.db"
   }
 }
