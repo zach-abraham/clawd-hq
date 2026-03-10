@@ -191,7 +191,7 @@ The synthesis heartbeat runs via a macOS LaunchAgent:
     <key>StartInterval</key>
     <integer>21600</integer>
     <key>WorkingDirectory</key>
-    <string>/Users/zabraham/clawd/hal</string>
+    <string>$PROJECT_ROOT/hal</string>
     <key>EnvironmentVariables</key>
     <dict>
       <key>GEMINI_API_KEY</key>
