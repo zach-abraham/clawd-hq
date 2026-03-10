@@ -12,7 +12,7 @@ graph LR
     end
 
     subgraph CHANNEL_A2A["A2A Protocol — Sync Queries"]
-        A2A["A2A Server<br/>(:9999)"]
+        A2A["A2A Server"]
     end
 
     subgraph DOMAIN_AGENTS["Domain Agents"]
@@ -59,7 +59,7 @@ graph LR
     %% Channel descriptions as notes
     EB_NOTE["Async, fire-and-forget<br/>All agents publish events<br/>HAL Synthesis reads unseen"]
     MEM0_NOTE["Persistent cross-session<br/>Shared context & decisions<br/>DLP-sanitized for sharing"]
-    A2A_NOTE["Synchronous request/response<br/>Cross-agent queries<br/>Tailscale-accessible"]
+    A2A_NOTE["Synchronous request/response<br/>Cross-agent queries<br/>Mesh-accessible"]
 
     EB -.- EB_NOTE
     MEM0 -.- MEM0_NOTE
